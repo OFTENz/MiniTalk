@@ -1,0 +1,11 @@
+																												MiniTalk !
+
+
+	- the POSIX standards.
+
+	Question !
+
+		-1 how those signals are transfered !
+		-2 what is sigation !
+		-3 how does the kill work !
+		

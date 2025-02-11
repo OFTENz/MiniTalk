@@ -6,12 +6,11 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:16:16 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/09 16:57:59 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/11 14:25:40 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <signal.h>
+#include "minitalk.h"
 
 // this functin is the one that determine if she'll send te siguser1 or 2
 // and she only receive one byte !
@@ -22,24 +21,56 @@ int	send_char(unsigned char unit, int pid)
 	
 	i = 128;
 	if (!unit)
-		return (write (2, "Empty String !\n", 15));
+		return (write (2, "\n Empty Byte !\n", 15));
 	while (i > 0)
 	{
 		if (unit >= i)
 		{
-			if (kill(pid, siguser1) < 0)
+			if (killa(pid, SIGUSR2) < 0)
 			{
-				write (1, "Failed to Send the signal !\n", 28);
-				return (-1);
+				write (1, "\nFailed to Send the signal !\n", 28);
+				exit(-1);
 			}
 			unit %= i;
 		}
 		else
-			kill(pid, siguser2);
+		{
+			if (killa(pid, SIGUSR1) < 0)
+			{
+				write (1, "\nFailed to Send the signal !\n", 28);
+				exit(-1);
+			}
+		}
 		usleep(600);
 		i /= 2;
 	}
+	return (-1);
+}
 
+
+// this functions send evry byte of the av[1] !
+
+void handle_it(int pid, char **av)
+{
+	int	a;
+
+	a = 0;
+	if (!av[1][0])
+		return ;
+	while (av[2][a])
+	{
+		printf("\n\n The character is : %c ==> ", av[2][a]);
+		fflush(stdout);
+		print_bits(av[2][a]);
+		fflush(stdout);
+		printf("\n\n");
+		fflush(stdout);
+
+		send_char(av[2][a], pid);
+		a++;
+		usleep(600);
+	}
+	send_char('\0', pid);
 }
 
 // This function checks if the string that contains pid 
@@ -62,18 +93,21 @@ int	pid_check(char *str)
 
 int	main(int ac, char **av)
 {
-	char *message;
 	int	pid;
 
-if (ac != 3)
-{
-	write (2, "Error !\n", 8);
-	return (-1);
-}
-
+	if (ac != 3)
+	{
+		write (2, "ErrOr !\n", 8);
+		return (-1);
+	}
 	pid = pid_check(av[1]);
 	if (pid == -1)
-		return (write (2, "Invalid Pid !\n", 14));
+	{
+		write (2, "Invalid Pid !\n", 14);
+		exit(-1);
+	}
 	
+	handle_it(pid, av);
+
 
 }
