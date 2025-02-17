@@ -8,4 +8,4 @@
 		-1 how those signals are transfered !
 		-2 what is sigation !
 		-3 how does the kill work !
-		
+		-4 	ss.sa_flags = SA_SIGINFO; Whats this ! 

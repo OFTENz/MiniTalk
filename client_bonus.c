@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:16:16 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/11 14:25:40 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/17 22:38:16 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 // this functin is the one that determine if she'll send te siguser1 or 2
 // and she only receive one byte !
@@ -20,13 +20,12 @@ int	send_char(unsigned char unit, int pid)
 	int	i;
 	
 	i = 128;
-	if (!unit)
-		return (write (2, "\n Empty Byte !\n", 15));
+
 	while (i > 0)
 	{
 		if (unit >= i)
 		{
-			if (killa(pid, SIGUSR2) < 0)
+			if (kill(pid, SIGUSR2) < 0)
 			{
 				write (1, "\nFailed to Send the signal !\n", 28);
 				exit(-1);
@@ -35,18 +34,26 @@ int	send_char(unsigned char unit, int pid)
 		}
 		else
 		{
-			if (killa(pid, SIGUSR1) < 0)
+			if (kill(pid, SIGUSR1) < 0)
 			{
 				write (1, "\nFailed to Send the signal !\n", 28);
 				exit(-1);
 			}
 		}
-		usleep(600);
+		usleep(550);
 		i /= 2;
 	}
 	return (-1);
 }
 
+static void	respond(int sig)
+{
+	if (sig == SIGUSR1)
+	{
+		write (1, "\nAcknowledgement Received !", 27);
+		exit(1);
+	}
+}
 
 // this functions send evry byte of the av[1] !
 
@@ -59,18 +66,11 @@ void handle_it(int pid, char **av)
 		return ;
 	while (av[2][a])
 	{
-		printf("\n\n The character is : %c ==> ", av[2][a]);
-		fflush(stdout);
-		print_bits(av[2][a]);
-		fflush(stdout);
-		printf("\n\n");
-		fflush(stdout);
-
 		send_char(av[2][a], pid);
 		a++;
-		usleep(600);
+		usleep(100);
 	}
-	send_char('\0', pid);
+	send_char(av[2][a], pid);
 }
 
 // This function checks if the string that contains pid 
@@ -93,7 +93,7 @@ int	pid_check(char *str)
 
 int	main(int ac, char **av)
 {
-	int	pid;
+	int			pid;
 
 	if (ac != 3)
 	{
@@ -106,8 +106,8 @@ int	main(int ac, char **av)
 		write (2, "Invalid Pid !\n", 14);
 		exit(-1);
 	}
-	
+	signal(SIGUSR1, respond);
 	handle_it(pid, av);
-
-
+	while (1)
+		pause();
 }

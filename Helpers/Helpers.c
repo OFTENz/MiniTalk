@@ -1,4 +1,4 @@
-#include "../minitalk.h"
+#include "../minitalk_bonus.h"
 
 void	print_bits(unsigned char octet)
 {
