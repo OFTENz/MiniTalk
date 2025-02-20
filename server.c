@@ -22,8 +22,6 @@ void	handler(int wht, siginfo_t *info, void *moreinfo)
 	trk++;
 	if (trk == 8)
 	{
-		if (!buffer)
-			kill((*info).si_pid, SIGUSR1);
 		write (1, &buffer, 1);
 		fflush(stdout);
 		buffer = '\0';

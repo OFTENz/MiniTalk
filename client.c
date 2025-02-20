@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_bonus.c                                     :+:      :+:    :+:   */
+/*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:16:16 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/20 15:47:53 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/20 15:49:37 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,6 @@ int	send_char(unsigned char unit, int pid)
 		i /= 2;
 	}
 	return (-1);
-}
-
-static void	respond(int sig)
-{
-	if (sig == SIGUSR1)
-	{
-		write (1, "\nAcknowledgement Received !", 27);
-		exit(1);
-	}
 }
 
 // this functions send evry byte of the av[1] !
@@ -106,8 +97,6 @@ int	main(int ac, char **av)
 		write (2, "Invalid Pid !\n", 14);
 		exit(-1);
 	}
-	signal(SIGUSR1, respond);
 	handle_it(pid, av);
-	while (1)
-		pause();
+
 }
