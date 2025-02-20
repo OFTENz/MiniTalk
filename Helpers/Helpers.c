@@ -1,4 +1,16 @@
-#include "../minitalk_bonus.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Helpers.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/20 21:30:58 by sel-mir           #+#    #+#             */
+/*   Updated: 2025/02/20 21:31:07 by sel-mir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../mandatory/minitalk.h"
 
 void	print_bits(unsigned char octet)
 {
@@ -30,7 +42,7 @@ int	killa(pid_t pid, int sig)
 		printf(", 1");
 		fflush(stdout);
 	}
-	return(kill(pid, sig));
+	return (kill(pid, sig));
 }
 
 static int	ft_cmplt(int sign)
@@ -67,4 +79,3 @@ int	ft_atoi(const char *str)
 	}
 	return (res * sign);
 }
-

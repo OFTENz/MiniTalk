@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_bonus.c                                     :+:      :+:    :+:   */
+/*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:16:16 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/20 15:47:53 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/20 21:33:09 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk_bonus.h"
+#include "minitalk.h"
 
 // this functin is the one that determine if she'll send te siguser1 or 2
 // and she only receive one byte !
@@ -18,9 +18,8 @@
 int	send_char(unsigned char unit, int pid)
 {
 	int	i;
-	
-	i = 128;
 
+	i = 128;
 	while (i > 0)
 	{
 		if (unit >= i)
@@ -43,21 +42,11 @@ int	send_char(unsigned char unit, int pid)
 		usleep(550);
 		i /= 2;
 	}
-	return (-1);
-}
-
-static void	respond(int sig)
-{
-	if (sig == SIGUSR1)
-	{
-		write (1, "\nAcknowledgement Received !", 27);
-		exit(1);
-	}
 }
 
 // this functions send evry byte of the av[1] !
 
-void handle_it(int pid, char **av)
+void	handle_it(int pid, char **av)
 {
 	int	a;
 
@@ -81,7 +70,7 @@ int	pid_check(char *str)
 {
 	int	a;
 
-	a  = 0;
+	a = 0;
 	while (str[a])
 	{
 		if (!(str[a] <= '9' && str[a] >= '0'))
@@ -106,8 +95,5 @@ int	main(int ac, char **av)
 		write (2, "Invalid Pid !\n", 14);
 		exit(-1);
 	}
-	signal(SIGUSR1, respond);
 	handle_it(pid, av);
-	while (1)
-		pause();
 }
