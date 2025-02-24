@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:16:16 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/20 21:33:09 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/24 08:02:02 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // this functin is the one that determine if she'll send te siguser1 or 2
 // and she only receive one byte !
 
-int	send_char(unsigned char unit, int pid)
+void	send_char(unsigned char unit, int pid)
 {
 	int	i;
 
@@ -39,7 +39,8 @@ int	send_char(unsigned char unit, int pid)
 				exit(-1);
 			}
 		}
-		usleep(550);
+		usleep(200);
+		usleep(200);
 		i /= 2;
 	}
 }
