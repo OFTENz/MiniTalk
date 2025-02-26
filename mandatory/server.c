@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 21:33:59 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/20 21:33:59 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/26 17:59:50 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	handler(int wht, siginfo_t *info, void *moreinfo)
 	if (trk == 8)
 	{
 		write (1, &buffer, 1);
-		fflush(stdout);
 		buffer = '\0';
 		trk = 0;
 	}
@@ -47,8 +46,8 @@ int	main(void)
 	pid = getpid();
 	if (!pid)
 		return (1);
-	printf("\n\n The pid is : %d", pid);
-	fflush(stdout);
+	write(1, "\n\n The pid is ", 14);
+	ft_putnbr_fd(pid, 1);
 	ss.sa_sigaction = &handler;
 	ss.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &ss, NULL);

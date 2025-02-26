@@ -1,55 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Helpers.c                                          :+:      :+:    :+:   */
+/*   Helpers_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 21:30:58 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/20 21:31:07 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/26 20:14:18 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../mandatory/minitalk.h"
-
-void	print_bits(unsigned char octet)
-{
-	int	i;
-
-	i = 128;
-	while (i > 0)
-	{
-		if (octet >= i)
-		{
-			write (1, "1", 1);
-			octet %= i;
-		}
-		else
-			write (1, "0", 1);
-		i /= 2;
-	}
-}
-
-int	killa(pid_t pid, int sig)
-{
-	if (sig == SIGUSR1)
-	{
-		printf(", 0");
-		fflush(stdout);
-	}
-	if (sig == SIGUSR2)
-	{
-		printf(", 1");
-		fflush(stdout);
-	}
-	return (kill(pid, sig));
-}
+#include "minitalk_bonus.h"
 
 static int	ft_cmplt(int sign)
 {
 	if (sign == -1)
 		return (0);
 	return (-1);
+}
+
+void	putstr(unsigned char *str)
+{
+	int	a;
+
+	a = 0;
+	while (str[a])
+		write (1, &str[a++], 1);
 }
 
 int	ft_atoi(const char *str)
@@ -62,20 +38,52 @@ int	ft_atoi(const char *str)
 	sign = 1;
 	res = 0;
 	a = 0;
-	while (str[a] == ' ' || (str[a] >= 9 && str[a] <= 13))
-		a++;
-	if (str[a] == '-' || str[a] == '+')
+	while (str[a])
 	{
-		if (str[a] == '-')
-			sign *= -1;
+		if (!(str[a] <= '9' && str[a] >= '0'))
+			return (-1);
 		a++;
 	}
+	a = 0;
 	while (str[a] <= '9' && str[a] >= '0')
 	{
 		d = res;
 		res = res * 10 + str[a++] - 48;
+		if (res > INT_MAX)
+			return (0);
 		if (res / 10 != d)
 			return (ft_cmplt(sign));
 	}
 	return (res * sign);
+}
+
+int	check_bytes(unsigned char unit)
+{
+	int	i;
+	int	a;
+
+	a = 0;
+	i = 128;
+	while (i > 0)
+	{
+		if (unit >= i)
+		{
+			a++;
+			unit %= i;
+		}
+		else
+			return (a);
+		i /= 2;
+	}
+	return (a);
+}
+
+void	general_act(int *a, unsigned char *buffer)
+{
+	if (a)
+		buffer[*a + 1] = 0;
+	else
+		buffer[1] = 0;
+	putstr(buffer);
+	*a = 0;
 }

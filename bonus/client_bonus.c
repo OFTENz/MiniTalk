@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 11:16:16 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/24 08:16:13 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/26 18:07:52 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,16 @@ void	send_char(unsigned char unit, int pid)
 		if (unit >= i)
 		{
 			if (kill(pid, SIGUSR2) < 0)
-			{
-				write (1, "\nFailed to Send the signal !\n", 28);
-				exit(-1);
-			}
+				out();
 			unit %= i;
 		}
 		else
 		{
 			if (kill(pid, SIGUSR1) < 0)
-			{
-				write (1, "\nFailed to Send the signal !\n", 28);
-				exit(-1);
-			}
+				out();
 		}
-		usleep(200);
-		usleep(200);
+		usleep(600);
+		usleep(600);
 		i /= 2;
 	}
 }
@@ -49,7 +43,7 @@ static void	respond(int sig)
 {
 	if (sig == SIGUSR1)
 	{
-		write (1, "\nAcknowledgement Received !", 27);
+		write (1, "\nAcknowledgement Received !\n", 28);
 		exit(1);
 	}
 }
@@ -94,13 +88,13 @@ int	main(int ac, char **av)
 {
 	int			pid;
 
-	if (ac != 3)
+	if (ac != 3 || (av[2] && !av[2][0]))
 	{
-		write (2, "ErrOr !\n", 8);
-		return (-1);
+		write (2, "Error !\nUsage : ./client_B <Pid>  <Message>\n", 44);
+		return (1);
 	}
 	pid = pid_check(av[1]);
-	if (pid == -1)
+	if (pid <= 0)
 	{
 		write (2, "Invalid Pid !\n", 14);
 		exit(-1);

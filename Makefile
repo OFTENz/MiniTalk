@@ -2,7 +2,13 @@ CC = cc
 
 FLAGS = -Wall -Wextra -Werror
 
-HLP_SRC = ./Helpers/Helpers.c
+HLP_SRC = ./mandatory/Helpers.c \
+			./mandatory/help.c
+
+HLP_SRCB = ./bonus/Helpers_bonus.c \
+			./bonus/help_bonus.c \
+			./bonus/hlp_bonus.c
+
 
 
 
@@ -65,14 +71,14 @@ $(SOBJ) : $(SSRC) ./mandatory/minitalk.h
 
 bonus : $(CLIENT_B) $(SERVER_B)
 
-$(CLIENT_B) : $(HLP_SRC) $(COBJ_B) ./bonus/minitalk_bonus.h
+$(CLIENT_B) : $(HLP_SRCB) $(COBJ_B) ./bonus/minitalk_bonus.h
 
-	$(CC) $(FLAGS)  $(COBJ_B) $(HLP_SRC) -o $(CLIENT_B)
+	$(CC) $(FLAGS)  $(COBJ_B) $(HLP_SRCB) -o $(CLIENT_B)
 
 
-$(SERVER_B) : $(HLP_SRC) $(SOBJ_B) ./bonus/minitalk_bonus.h
+$(SERVER_B) : $(HLP_SRCB) $(SOBJ_B) ./bonus/minitalk_bonus.h
 
-	$(CC) $(FLAGS) $(SOBJ_B) $(HLP_SRC) -o $(SERVER_B)
+	$(CC) $(FLAGS) $(SOBJ_B) $(HLP_SRCB) -o $(SERVER_B)
 
 
 $(COBJ_B) : $(CSRC_B) ./bonus/minitalk_bonus.h
@@ -89,4 +95,6 @@ clean:
 	rm -f $(COBJ_B) $(SOBJ_B) $(COBJ) $(SOBJ)
 
 fclean: clean
-	rm -f $(SERVER_B) $(CLIENT_B) $(SERVER) $(CLIENT) 
+	rm -f $(SERVER_B) $(CLIENT_B) $(SERVER) $(CLIENT)
+
+re : fclean all
