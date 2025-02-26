@@ -6,7 +6,7 @@
 /*   By: sel-mir <sel-mir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 21:33:59 by sel-mir           #+#    #+#             */
-/*   Updated: 2025/02/26 17:59:50 by sel-mir          ###   ########.fr       */
+/*   Updated: 2025/02/26 21:07:55 by sel-mir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(void)
 		return (1);
 	write(1, "\n\n The pid is ", 14);
 	ft_putnbr_fd(pid, 1);
+	write(1, "\n", 1);
 	ss.sa_sigaction = &handler;
 	ss.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &ss, NULL);
